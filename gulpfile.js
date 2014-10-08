@@ -13,7 +13,7 @@ gulp.task('browserify', function() {
 
 gulp.task('copy', function() {
     // copy phaser lib to build directory
-    gulp.src(['./bower_components/phaser-official/build/phaser.min.js','./bower_components/phaser-official/build/phaser.map'])
+    gulp.src(['./node_modules/phaser/dist/phaser.min.js','./node_modules/phaser/dist/phaser.map'])
     .pipe(gulp.dest('./build'));
 
     // copy html, css and assets to build directory

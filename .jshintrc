@@ -5,8 +5,5 @@
     "camelcase": true,
     "curly": true,
     "eqeqeq": true,
-    "indent": 4,
-    "globals": {
-        "Phaser": true
-    }
+    "indent": 4
 }

@@ -1,9 +1,9 @@
 "use strict";
-
+var Phaser = require("./phaser");
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
 
 var image;
-var cursor;
+var cursors;
 
 function preload() {
 
@@ -14,7 +14,7 @@ function preload() {
 
     //  The second parameter is the URL of the image (relative)
     game.load.image('test', 'assets/test-all-the-things.jpg');
-    cursor = game.input.keyboard.createCursorKeys();
+    cursors = game.input.keyboard.createCursorKeys();
 }
 
 function create() {
@@ -30,13 +30,13 @@ function create() {
 }
 
 function update() {
-    if(cursor.up.isDown) {
+    if(cursors.up.isDown) {
         image.y -= 5;
-    } else if(cursor.down.isDown) {
+    } else if(cursors.down.isDown) {
         image.y += 5;
-    } else if(cursor.left.isDown) {
+    } else if(cursors.left.isDown) {
         image.x -= 5;
-    } else if(cursor.right.isDown) {
+    } else if(cursors.right.isDown) {
         image.x += 5;
     }
 }
