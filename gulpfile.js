@@ -9,6 +9,7 @@ var watchify = require('watchify');
 var connect = require('connect');
 var serveStatic = require('serve-static');
 var uglify = require('gulp-uglify');
+var browserSync = require('browser-sync');
 
 gulp.task('javascript', function() {
     var bundler = watchify(browserify('./src/index.js', watchify.args));
@@ -16,13 +17,13 @@ gulp.task('javascript', function() {
     bundler.on('update', rebundle);
 
     function rebundle() {
-    return bundler.bundle()
-      // log errors if they happen
-      .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-      .pipe(source('game.js'))
-      .pipe(buffer())
-      .pipe(uglify())
-      .pipe(gulp.dest('./build'));
+        return bundler.bundle()
+        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+        .pipe(source('game.js'))
+        .pipe(buffer())
+        .pipe(uglify())
+        .pipe(gulp.dest('./build'))
+        .pipe(browserSync.reload({stream:true, once: true})); //reload browserSync because javascript doesn't get updated otherwise
     }
 
     return rebundle();
@@ -38,12 +39,21 @@ gulp.task('copy-assets', function() {
     .pipe(gulp.dest('./build'));
 });
 
-gulp.task('webserver', function() {
+// connect static server
+/*gulp.task('webserver', function() {
     var app = connect();
     app.use(serveStatic('build'));
     app.listen(3000);
+});*/
+
+gulp.task('browser-sync', ['copy-assets', 'javascript'], function() {
+    browserSync.init(null, {
+        server: {
+            baseDir: "./build"
+        }
+    });
 });
 
 gulp.task('build', ['copy-assets', 'javascript']);
 
-gulp.task('default', ['build', 'webserver']);
+gulp.task('default', ['browser-sync']);
